@@ -32,15 +32,15 @@ By "styles" I mean [ANSI SGR codes](https://en.wikipedia.org/wiki/ANSI_escape_co
 ## Information Line
 The core of the prompt.
 ```
-<user> @ <host>: <path> | <branch> [<status>]
+<user> @ <host>: <path> | <nodejs> | <branch> [<status>]
 ```
 
 ### Data sources
-*`HEADLINE_USER_CMD`, `HEADLINE_HOST_CMD`, `HEADLINE_PATH_CMD`, `HEADLINE_GIT_BRANCH_CMD`, `HEADLINE_GIT_STATUS_CMD`*  
+*`HEADLINE_USER_CMD`, `HEADLINE_HOST_CMD`, `HEADLINE_PATH_CMD`, `HEADLINE_GIT_BRANCH_CMD`, `HEADLINE_GIT_STATUS_CMD`, `HEADLINE_NODEJS_CMD`*  
 Commands that are eval'd to obtain each segment's content. Enclose in single quotes. Use empty string to disable a segment.
 
 ### Symbols
-*`HEADLINE_USER_PREFIX`, `HEADLINE_HOST_PREFIX`, `HEADLINE_PATH_PREFIX`, `HEADLINE_BRANCH_PREFIX`*  
+*`HEADLINE_USER_PREFIX`, `HEADLINE_HOST_PREFIX`, `HEADLINE_PATH_PREFIX`, `HEADLINE_NODEJS_PREFIX`, `HEADLINE_BRANCH_PREFIX`*  
 Symbols to prepend to each segment of info line. The symbols must be included with your font. More details in [Terminal Setup](Terminal-Setup.md).
 
 ### Joints
@@ -53,6 +53,7 @@ The connector strings between information segments.
 | *`HEADLINE_PATH_TO_BRANCH`*   | `' \| '` |
 | *`HEADLINE_PATH_TO_PAD`*      | (none)   |
 | *`HEADLINE_PAD_TO_BRANCH`*    | (none)   |
+| *`HEADLINE_NODEJS_TO_BRANCH`* | `' '`    |
 | *`HEADLINE_BRANCH_TO_STATUS`* | `' ['`   |
 | *`HEADLINE_STATUS_TO_STATUS`* | (none)   |
 | *`HEADLINE_STATUS_END`*       | `']'`    |
@@ -73,6 +74,7 @@ Styles applied to each segment. The default style applies to the entire informat
 | *`HEADLINE_STYLE_USER`*    | `$bold$red`     |
 | *`HEADLINE_STYLE_HOST`*    | `$bold$yellow`  |
 | *`HEADLINE_STYLE_PATH`*    | `$bold$blue`    |
+| *`HEADLINE_STYLE_NODEJS`*  | `$bold$green`   |
 | *`HEADLINE_STYLE_BRANCH`*  | `$bold$cyan`    |
 | *`HEADLINE_STYLE_STATUS`*  | `$bold$magenta` |
 | *`HEADLINE_STYLE_DEFAULT`* | (none)          |
@@ -113,6 +115,7 @@ Styles applied to each segment of the separator line.
 | *`HEADLINE_STYLE_USER_LINE`*    | `$bold$red`     |
 | *`HEADLINE_STYLE_HOST_LINE`*    | `$bold$yellow`  |
 | *`HEADLINE_STYLE_PATH_LINE`*    | `$bold$blue`    |
+| *`HEADLINE_STYLE_NODEJS_LINE`*  | `$bold$green`   |
 | *`HEADLINE_STYLE_BRANCH_LINE`*  | `$bold$cyan`    |
 | *`HEADLINE_STYLE_STATUS_LINE`*  | `$bold$magenta` |
 
