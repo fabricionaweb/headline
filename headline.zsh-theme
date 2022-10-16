@@ -88,6 +88,7 @@ HEADLINE_STYLE_ERR=$italic$faint
 HEADLINE_DO_USER='true'
 HEADLINE_DO_HOST='true'
 HEADLINE_DO_PATH='true'
+HEADLINE_DO_NODEJS='true'
 HEADLINE_DO_GIT_BRANCH='true'
 HEADLINE_DO_GIT_STATUS='true'
 
@@ -108,6 +109,7 @@ HEADLINE_PAD_CHAR=' ' # space between <path> and <branch>
 HEADLINE_USER_PREFIX='' # consider " "
 HEADLINE_HOST_PREFIX='' # consider " "
 HEADLINE_PATH_PREFIX='' # consider " "
+HEADLINE_NODEJS_PREFIX='' # consider "⬢ "
 HEADLINE_BRANCH_PREFIX='' # consider " "
 
 # Joints
@@ -118,6 +120,7 @@ HEADLINE_HOST_TO_PATH=': '
 HEADLINE_PATH_TO_BRANCH=' | ' # only used when no padding between <path> and <branch>
 HEADLINE_PATH_TO_PAD='' # used if padding between <path> and <branch>
 HEADLINE_PAD_TO_BRANCH='' # used if padding between <path> and <branch>
+HEADLINE_NODEJS_TO_BRANCH=' '
 HEADLINE_BRANCH_TO_STATUS=' ['
 HEADLINE_STATUS_TO_STATUS='' # between each status section, consider "]"
 HEADLINE_STATUS_END=']'
@@ -128,6 +131,7 @@ HEADLINE_STYLE_JOINT=$light_black
 HEADLINE_STYLE_USER=$bold$red
 HEADLINE_STYLE_HOST=$bold$yellow
 HEADLINE_STYLE_PATH=$bold$blue
+HEADLINE_STYLE_NODEJS=$bold$green
 HEADLINE_STYLE_BRANCH=$bold$cyan
 HEADLINE_STYLE_STATUS=$bold$magenta
 
@@ -136,6 +140,7 @@ HEADLINE_STYLE_JOINT_LINE=$HEADLINE_STYLE_JOINT
 HEADLINE_STYLE_USER_LINE=$HEADLINE_STYLE_USER
 HEADLINE_STYLE_HOST_LINE=$HEADLINE_STYLE_HOST
 HEADLINE_STYLE_PATH_LINE=$HEADLINE_STYLE_PATH
+HEADLINE_STYLE_NODEJS_LINE=$HEADLINE_STYLE_NODEJS
 HEADLINE_STYLE_BRANCH_LINE=$HEADLINE_STYLE_BRANCH
 HEADLINE_STYLE_STATUS_LINE=$HEADLINE_STYLE_STATUS
 
@@ -357,10 +362,11 @@ headline_precmd() {
   local err=$?
 
   # Information
-  local user_str host_str path_str branch_str status_str
+  local user_str host_str path_str branch_str status_str nodejs_version
   [[ $HEADLINE_DO_USER == 'true' ]] && user_str=$USER
   [[ $HEADLINE_DO_HOST == 'true' ]] && host_str=$(hostname -s)
   [[ $HEADLINE_DO_PATH == 'true' ]] && path_str=$(print -rP '%~')
+  [[ $HEADLINE_DO_NODEJS == 'true' ]] && nodejs_version=$(node -v 2>&-)
   [[ $HEADLINE_DO_GIT_BRANCH == 'true' ]] && branch_str=$(headline_git_branch)
   [[ $HEADLINE_DO_GIT_STATUS == 'true' ]] && status_str=$(headline_git_status)
 
@@ -388,6 +394,12 @@ headline_precmd() {
   fi
   if (( ${#branch_str} )); then
     _headline_part BRANCH "$HEADLINE_BRANCH_PREFIX$branch_str" right
+    if (( ${#nodejs_version} )); then
+      _headline_part JOINT "$HEADLINE_NODEJS_TO_BRANCH" right
+    fi
+  fi
+  if (( ${#nodejs_version} )); then
+    _headline_part NODEJS "$HEADLINE_NODEJS_PREFIX${nodejs_version:1}" right
   fi
   git_len=$_HEADLINE_LEN_SUM
   if (( ${#user_str} )); then
