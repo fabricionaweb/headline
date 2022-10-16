@@ -78,11 +78,13 @@ HEADLINE_HOST_CMD='hostname -s' # consider 'basename "$VIRTUAL_ENV"' to replace 
 HEADLINE_PATH_CMD='print -rP "%~"'
 HEADLINE_GIT_BRANCH_CMD='headline_git_branch'
 HEADLINE_GIT_STATUS_CMD='headline_git_status'
+HEADLINE_NODEJS_CMD='node -v 2>&-'
 
 # Info symbols (optional)
 HEADLINE_USER_PREFIX='' # consider " "
 HEADLINE_HOST_PREFIX='' # consider " "
 HEADLINE_PATH_PREFIX='' # consider " "
+HEADLINE_NODEJS_PREFIX='' # consider "⬢ "
 HEADLINE_BRANCH_PREFIX='' # consider " "
 
 # Info joints
@@ -93,6 +95,7 @@ HEADLINE_HOST_TO_PATH=': '
 HEADLINE_PATH_TO_BRANCH=' | ' # only used when no padding between <path> and <branch>
 HEADLINE_PATH_TO_PAD='' # used if padding between <path> and <branch>
 HEADLINE_PAD_TO_BRANCH='' # used if padding between <path> and <branch>
+HEADLINE_NODEJS_TO_BRANCH=' '
 HEADLINE_BRANCH_TO_STATUS=' ['
 HEADLINE_STATUS_TO_STATUS='' # between each status section, consider "]"
 HEADLINE_STATUS_END=']'
@@ -109,6 +112,7 @@ HEADLINE_STYLE_JOINT=$light_black
 HEADLINE_STYLE_USER=$bold$red
 HEADLINE_STYLE_HOST=$bold$yellow
 HEADLINE_STYLE_PATH=$bold$blue
+HEADLINE_STYLE_NODEJS=$bold$green
 HEADLINE_STYLE_BRANCH=$bold$cyan
 HEADLINE_STYLE_STATUS=$bold$magenta
 
@@ -128,6 +132,7 @@ HEADLINE_STYLE_JOINT_LINE=$HEADLINE_STYLE_JOINT
 HEADLINE_STYLE_USER_LINE=$HEADLINE_STYLE_USER
 HEADLINE_STYLE_HOST_LINE=$HEADLINE_STYLE_HOST
 HEADLINE_STYLE_PATH_LINE=$HEADLINE_STYLE_PATH
+HEADLINE_STYLE_NODEJS_LINE=$HEADLINE_STYLE_NODEJS
 HEADLINE_STYLE_BRANCH_LINE=$HEADLINE_STYLE_BRANCH
 HEADLINE_STYLE_STATUS_LINE=$HEADLINE_STYLE_STATUS
 
@@ -364,12 +369,13 @@ headline_precmd() {
   local err=$?
 
   # Information
-  local user_str host_str path_str branch_str status_str
+  local user_str host_str path_str branch_str status_str nodejs_str
   user_str=$(eval $HEADLINE_USER_CMD)
   host_str=$(eval $HEADLINE_HOST_CMD)
   path_str=$(eval $HEADLINE_PATH_CMD)
   branch_str=$(eval $HEADLINE_GIT_BRANCH_CMD)
   status_str=$(eval $HEADLINE_GIT_STATUS_CMD)
+  nodejs_str=$(eval $HEADLINE_NODEJS_CMD)
 
   # Shared variables
   _HEADLINE_LEN_REMAIN=$COLUMNS
@@ -400,6 +406,15 @@ headline_precmd() {
       len=$(( $len - ${#HEADLINE_PAD_TO_BRANCH} ))
     fi
     _headline_part BRANCH "$HEADLINE_BRANCH_PREFIX%$len<$HEADLINE_TRUNC_PREFIX<$branch_str%<<" right
+
+    if (( ${#nodejs_str} )); then
+      _headline_part JOINT "$HEADLINE_NODEJS_TO_BRANCH" right
+    fi
+  fi
+
+  # Node JS
+  if (( ${#nodejs_str} )); then
+    _headline_part NODEJS "$HEADLINE_NODEJS_PREFIX${nodejs_str:1}" right
   fi
 
   # Trimming
