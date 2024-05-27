@@ -85,7 +85,7 @@ HEADLINE_USER_PREFIX='' # consider " "
 HEADLINE_HOST_PREFIX='' # consider " "
 HEADLINE_PATH_PREFIX='' # consider " "
 HEADLINE_NODEJS_PREFIX='' # consider "⬢ "
-HEADLINE_BRANCH_PREFIX='' # consider " "
+HEADLINE_BRANCH_PREFIX='' # consider " "
 
 # Info joints
 HEADLINE_USER_BEGIN=''
