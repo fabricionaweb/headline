@@ -113,7 +113,7 @@ HL_LAYOUT_STYLE="%{$faint%}"
 
 # Order of segments
 declare -a HL_LAYOUT_ORDER=(
-  _PRE USER HOST VENV PATH _SPACER BRANCH STATUS _POST # ...
+  _PRE USER HOST VENV PATH _SPACER BRANCH STATUS NODEJS _POST # ...
 )
 
 # Template for each segment's layout
@@ -126,6 +126,7 @@ declare -A HL_LAYOUT_TEMPLATE=(
   _SPACER ' | ' # special, only shows when compact, otherwise fill with space
   BRANCH  '...'
   STATUS  ' [...]'
+  NODEJS  ' ...'
   _POST   ''
   # ...
 )
@@ -148,8 +149,9 @@ declare -A HL_CONTENT_TEMPLATE=(
   HOST   "%{$bold$yellow%}..." # consider '󰇅 ' or ' '
   VENV   "%{$bold$green%}..." # consider ' ' or ' '
   PATH   "%{$bold$blue%}..." # consider ' ' or ' '
-  BRANCH "%{$bold$cyan%}..." # consider ' ' or ' '
+  BRANCH "%{$bold$cyan%}..." # consider ' ' or ' ' or ' '
   STATUS "%{$bold$magenta%}..."
+  NODEJS "%{$bold$green%}..." # consider '⬢ '
   # ...
 )
 
@@ -161,6 +163,7 @@ declare -A HL_CONTENT_SOURCE=(
   PATH   'print -rP "%~"'
   BRANCH 'headline-git-branch'
   STATUS 'headline-git-status'
+  NODEJS 'node -v 2>&-'
   # ...
 )
 
